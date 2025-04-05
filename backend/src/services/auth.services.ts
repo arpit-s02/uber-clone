@@ -7,6 +7,11 @@ export const hashPassword = async (password: string) => {
   return await bcrypt.hash(password, saltRounds);
 };
 
+export const comparePassword = async (password: string, hashedPassword: string) => {
+  const result = await bcrypt.compare(password, hashedPassword);
+  return result;
+}
+
 export const generateAuthToken = (id: number) => {
   const token = jwt.sign({ id }, JWT_SECRET);
   return token;

@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from "express";
 import { createUser, findUserByEmail } from "../services/user.services";
 import { StatusCodes } from "http-status-codes";
-import { generateAuthToken } from "../services/auth.services";
+import { comparePassword, generateAuthToken } from "../services/auth.services";
 import { validationResult } from "express-validator";
 
 export const register: RequestHandler = async (req: Request, res: Response) => {
@@ -48,3 +48,38 @@ export const register: RequestHandler = async (req: Request, res: Response) => {
     console.log("error while registering", error);
   }
 };
+
+export const login = async (req: Request, res: Response) => {
+  try {
+    // check for validation errors
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
+      return;
+    }
+
+    const { email, password } = req.body;
+
+    // find user by email
+    const user = await findUserByEmail(email);
+    if(!user) {
+      res.status(StatusCodes.UNAUTHORIZED).json({ message: "Invalid email or password" });
+      return;
+    }
+
+    // confirm given password with user's password
+    const isPasswordCorrect = await comparePassword(password, user.password);
+    if(!isPasswordCorrect) {
+      res.status(StatusCodes.UNAUTHORIZED).json({ message: "Invalid email or password" });
+      return;
+    }
+
+    // generate token
+    const token = generateAuthToken(user.id);
+
+    const { password: userPassword, ...responseUser } = user;
+    res.json({ user: responseUser, token });
+  } catch (error) {
+    console.log("error while logging in", error);
+  }
+}

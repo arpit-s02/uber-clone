@@ -29,3 +29,30 @@ The request should be in JSON format and include
   - `email` (string): User's email address
   - `socketId` (string | null): Socket id
 - `token` (string): JWT token
+
+## `/users/login` Endpoint
+
+### Description
+
+Authenticates a user using email and password
+
+### HTTP Method
+
+`POST`
+
+### Request Body
+
+The request should be in JSON format and include
+
+- `email` (string, required): User's email address
+- `password` (string, required): User's password
+
+### Example Response
+
+- `user` (object):
+  - `id` (number): User id
+  - `firstName` (string): User's first name
+  - `lastName` (string | null): User's last name
+  - `email` (string): User's email address
+  - `socketId` (string | null): Socket id
+- `token` (string): JWT token
