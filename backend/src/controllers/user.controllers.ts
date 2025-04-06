@@ -3,6 +3,7 @@ import { createUser, findUserByEmail } from "../services/user.services";
 import { StatusCodes } from "http-status-codes";
 import { comparePassword, generateAuthToken } from "../services/auth.services";
 import { validationResult } from "express-validator";
+import { RequestWithUser } from "../types/user.types";
 
 export const register: RequestHandler = async (req: Request, res: Response) => {
   try {
@@ -82,4 +83,9 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     console.log("error while logging in", error);
   }
+}
+
+export const getProfile = async (req: RequestWithUser, res: Response) => {
+  const { password: userPassword, ...user } = req.user;
+  res.json(user);
 }

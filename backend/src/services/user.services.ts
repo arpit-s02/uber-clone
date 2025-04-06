@@ -27,3 +27,11 @@ export const findUserByEmail = async (email: string) => {
 
   return user;
 };
+
+export const findUserById = async (id: number) => {
+  const user = await client.user.findUnique({
+    where: { id }
+  })
+
+  return user;
+}
