@@ -54,7 +54,7 @@ export const login = async (req: Request, res: Response) => {
   try {
     // check for validation errors
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
       res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
       return;
     }
@@ -63,15 +63,19 @@ export const login = async (req: Request, res: Response) => {
 
     // find user by email
     const user = await findUserByEmail(email);
-    if(!user) {
-      res.status(StatusCodes.UNAUTHORIZED).json({ message: "Invalid email or password" });
+    if (!user) {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "Invalid email or password" });
       return;
     }
 
     // confirm given password with user's password
     const isPasswordCorrect = await comparePassword(password, user.password);
-    if(!isPasswordCorrect) {
-      res.status(StatusCodes.UNAUTHORIZED).json({ message: "Invalid email or password" });
+    if (!isPasswordCorrect) {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "Invalid email or password" });
       return;
     }
 
@@ -83,11 +87,11 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     console.log("error while logging in", error);
   }
-}
+};
 
 export const getProfile = async (req: Request, res: Response) => {
   const { user: authenticatedUser } = req as RequestWithUser;
   const { password, ...user } = authenticatedUser;
 
   res.json(user);
-}
+};

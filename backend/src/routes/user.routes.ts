@@ -25,11 +25,11 @@ router.post(
   "/login",
   [
     body("email").isEmail().withMessage("Invalid email"),
-    body("password").isString().withMessage("Password is required")
+    body("password").isString().withMessage("Password is required"),
   ],
   login
-)
+);
 
-router.get("/profile", authenticate, getProfile)
+router.get("/profile", authenticate, getProfile);
 
 export default router;

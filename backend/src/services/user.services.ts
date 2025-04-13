@@ -30,8 +30,8 @@ export const findUserByEmail = async (email: string) => {
 
 export const findUserById = async (id: number) => {
   const user = await client.user.findUnique({
-    where: { id }
-  })
+    where: { id },
+  });
 
   return user;
-}
+};
