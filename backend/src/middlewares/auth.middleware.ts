@@ -4,7 +4,7 @@ import { verifyToken } from "../services/auth.services";
 import { findUserById } from "../services/user.services";
 import { RequestWithUser } from "../types/user.types";
 
-export const authenticate = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // check authorization token format
         if(!req.headers.authorization || !req.headers.authorization.startsWith("Bearer ")) {
@@ -27,7 +27,7 @@ export const authenticate = async (req: RequestWithUser, res: Response, next: Ne
         }
 
         // attach user to request object
-        req.user = user;
+        (req as RequestWithUser).user = user;
         next();
     } catch (error) {
         console.log("Token authentication failed", error);

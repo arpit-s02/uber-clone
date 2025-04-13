@@ -85,7 +85,9 @@ export const login = async (req: Request, res: Response) => {
   }
 }
 
-export const getProfile = async (req: RequestWithUser, res: Response) => {
-  const { password: userPassword, ...user } = req.user;
+export const getProfile = async (req: Request, res: Response) => {
+  const { user: authenticatedUser } = req as RequestWithUser;
+  const { password, ...user } = authenticatedUser;
+
   res.json(user);
 }
